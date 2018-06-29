@@ -4,6 +4,9 @@ import numpy as np
 #import os
 #os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
+import gc
+gc.collect()
+
 tf.logging.set_verbosity(tf.logging.INFO)
 
 def one_hot(labels, num_classes):
