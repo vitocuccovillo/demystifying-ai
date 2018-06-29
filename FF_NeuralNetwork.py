@@ -3,6 +3,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import utils
 
+
 def dense(input_tensor, output_units, scope, activation=None):
     with tf.name_scope(scope):
         #shape of the weights matrix
@@ -18,6 +19,7 @@ def dense(input_tensor, output_units, scope, activation=None):
             return activation(layer)
         else:
             return layer
+
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
@@ -84,7 +86,8 @@ def one_hot(labels, num_classes):
     results = np.zeros(shape=(len(labels), num_classes), dtype=np.float32)
     for i, values in enumerate(labels):
         results[i,values] = 1.
-    return  results
+    return results
+
 
 train_labels_one_hot = one_hot(train_labels, 10)
 test_labels_one_hot = one_hot(test_labels, 10)

@@ -7,12 +7,8 @@ def one_hot(labels, num_classes):
     results = np.zeros(shape=(len(labels), num_classes), dtype=np.float32)
     for i, values in enumerate(labels):
         results[i,values] = 1.
-    return  results
+    return results
 
-
-(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.mnist.load_data()
-print('shape training images ', train_images.shape)
-print('shape test images ', test_images.shape)
 
 input_l = tf.keras.Input((28,28, 1))
 conv_1 = tf.keras.layers.Conv2D(32, (3,3), activation='relu')(input_l)
@@ -25,18 +21,19 @@ dense_1 = tf.keras.layers.Dense(64, activation='relu')(flatten)
 dense_2 = tf.keras.layers.Dense(10, activation='softmax')(dense_1)
 
 model = tf.keras.Model(inputs=[input_l], outputs=[dense_2])
+model.compile(optimizer=tf.keras.optimizers.RMSprop(),
+              loss=tf.keras.losses.categorical_crossentropy,
+              metrics=['accuracy'])
+print(model.summary())
 
-model.summary()
-
+(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.mnist.load_data()
+print('shape training images ', train_images.shape)
+print('shape test images ', test_images.shape)
 train_images_reshaped = train_images.reshape((-1, 28, 28, 1))
 test_images_reshaped = test_images.reshape((-1, 28, 28, 1))
 
 train_labels_one_hot = one_hot(train_labels, 10)
 test_labels_one_hot = one_hot(test_labels, 10)
-
-model.compile(optimizer=tf.keras.optimizers.RMSprop(),
-              loss=tf.keras.losses.categorical_crossentropy,
-              metrics=['accuracy'])
 
 history = model.fit(train_images_reshaped, train_labels_one_hot, validation_split=0.1, epochs=5, batch_size=64);
 
